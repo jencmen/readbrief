@@ -68,7 +68,7 @@
 </head>
 <body>
   <div class="container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Open_book_nae_02.svg/1024px-Open_book_nae_02.svg.png" alt="ReadBrief Logo" class="logo">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="ReadBrief Logo" class="logo">
     <h1>ReadBrief</h1>
     <input type="text" id="book_title" placeholder="Book Title">
     <input type="text" id="author" placeholder="Author (optional)">
