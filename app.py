@@ -7,9 +7,6 @@ app = Flask("ReadBrief")
 # Set your Google AI Studio API Key
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-# Load the Gemini Pro model
-model = genai.GenerativeModel("models/gemini-pro")
-
 # Route for homepage
 @app.route('/')
 def home():
@@ -25,7 +22,9 @@ def summarize():
     prompt = f"Summarize the book '{book_title}' by {author}."
 
     try:
-        response = model.generate_content(prompt)
+        model = genai.GenerativeModel("models/gemini-pro")
+        chat = model.start_chat()
+        response = chat.send_message(prompt)
         summary = response.text
         return jsonify({'summary': summary})
 
