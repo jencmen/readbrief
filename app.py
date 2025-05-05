@@ -8,7 +8,7 @@ app = Flask("ReadBrief")
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # Load the Gemini Pro model
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("models/gemini-pro")
 
 # Route for homepage
 @app.route('/')
