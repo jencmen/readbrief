@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ReadBrief</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #4285f4;
+      margin-bottom: 30px;
+    }
+
+    input {
+      width: 400px;
+      padding: 12px 20px;
+      margin: 10px;
+      border-radius: 24px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 24px;
+      font-size: 16px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #3367d6;
+    }
+
+    #summary {
+      margin-top: 40px;
+      width: 60%;
+      max-width: 700px;
+      text-align: left;
+      font-size: 18px;
+      white-space: pre-wrap;
+    }
+
+    .logo {
+      width: 150px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Open_book_nae_02.svg/1024px-Open_book_nae_02.svg.png" alt="ReadBrief Logo" class="logo">
+    <h1>ReadBrief</h1>
+    <input type="text" id="book_title" placeholder="Book Title">
+    <input type="text" id="author" placeholder="Author (optional)">
+    <button onclick="summarizeBook()">Summarize</button>
+    <div id="summary"></div>
+  </div>
+
+  <script>
+    async function summarizeBook() {
+      const title = document.getElementById('book_title').value;
+      const author = document.getElementById('author').value;
+
+      const response = await fetch('/summarize', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({book_title: title, author: author})
+      });
+
+      const result = await response.json();
+      document.getElementById('summary').textContent = result.summary || result.error;
+    }
+  </script>
+</body>
+</html>
