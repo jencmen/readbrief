@@ -22,7 +22,7 @@ def summarize():
     prompt = f"Summarize the book '{book_title}' by {author}."
 
     try:
-        model = genai.GenerativeModel("models/gemini-pro")
+        model = genai.GenerativeModel("gemini-2.0-flash")
         chat = model.start_chat()
         response = chat.send_message(prompt)
         summary = response.text
