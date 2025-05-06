@@ -21,7 +21,9 @@ def summarize():
         text_model = genai.GenerativeModel("gemini-2.0-flash")
         chat = text_model.start_chat()
         text_response = chat.send_message(prompt)
-        summary = text_response.text + models
+        summary = text_response.text 
+        for model in models:
+            summary = summary + model.name
 
         # 2. Use Unsplash for a symbolic book image
         image_url = f"https://source.unsplash.com/800x400/?book,{book_title.replace(' ', '+')}"
