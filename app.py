@@ -29,7 +29,7 @@ def summarize():
                 "Accept-Version": "v1",
                 "Authorization": f"Client-ID {os.getenv('UNSPLASH_ACCESS_KEY')}"
             }
-            query = f"{book_title} book"
+            query = f"{book_title}"
             response = requests.get(
                 "https://api.unsplash.com/search/photos",
                 params={"query": query, "per_page": 1},
