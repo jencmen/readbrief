@@ -16,11 +16,12 @@ def summarize():
     prompt = f"Summarize the book '{book_title}' by {author}."
 
     try:
+        models = genai.list_models()
         # 1. Get text summary from gemini-pro
         text_model = genai.GenerativeModel("gemini-2.0-flash")
         chat = text_model.start_chat()
         text_response = chat.send_message(prompt)
-        summary = text_response.text
+        summary = text_response.text + models
 
         # 2. Use Unsplash for a symbolic book image
         image_url = f"https://source.unsplash.com/800x400/?book,{book_title.replace(' ', '+')}"
