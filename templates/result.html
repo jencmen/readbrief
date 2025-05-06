@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ title }} Summary | ReadBrief</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background-color: #f4f4f4;
+    }
+    img {
+      max-width: 80%;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .summary {
+      margin-top: 30px;
+      font-size: 18px;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Summary of <em>{{ title }}</em></h1>
+  {% if author %}<h3>by {{ author }}</h3>{% endif %}
+  {% if image_url %}
+    <img src="{{ image_url }}" alt="Visual representation of {{ title }}">
+  {% endif %}
+  <div class="summary">{{ summary }}</div>
+</body>
+</html>
