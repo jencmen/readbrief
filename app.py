@@ -1,5 +1,6 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, url_for
 import os
+import base64
 import google.generativeai as genai
 
 app = Flask("ReadBrief")
@@ -16,17 +17,28 @@ def summarize():
     prompt = f"Summarize the book '{book_title}' by {author}."
 
     try:
-        models = genai.list_models()
         # 1. Get text summary from gemini-pro
-        text_model = genai.GenerativeModel("gemini-2.0-flash")
+        text_model = genai.GenerativeModel("models/gemini-2.0-flash")
         chat = text_model.start_chat()
         text_response = chat.send_message(prompt)
-        summary = text_response.text 
-        for model in models:
-            summary = summary + model.name
+        summary = text_response.text
 
-        # 2. Use Unsplash for a symbolic book image
-        image_url = f"https://source.unsplash.com/800x400/?book,{book_title.replace(' ', '+')}"
+        # 2. Generate symbolic image from summary using gemini-vision (simulated image output)
+        image_prompt = f"Create a symbolic illustration that visually represents the themes and story of: {summary}"
+        vision_model = genai.GenerativeModel("models/gemini-1.0-pro-vision-latest")
+
+        try:
+            vision_response = vision_model.generate_content([
+                image_prompt
+            ], generation_config={"response_mime_type": "text/plain"})
+
+            # NOTE: Gemini currently cannot return real image data, this is a placeholder
+            # You would replace this with real image generation logic when supported
+            image_placeholder = url_for('static', filename='default_image.png')
+            image_url = image_placeholder
+
+        except Exception as vision_error:
+            image_url = url_for('static', filename='default_image.png')
 
         return render_template("result.html", title=book_title, author=author, summary=summary, image_url=image_url)
 
