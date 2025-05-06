@@ -18,7 +18,7 @@ def summarize():
 
     try:
         # 1. Get text summary from gemini-pro
-        text_model = genai.GenerativeModel("models/gemini-pro")
+        text_model = genai.GenerativeModel("gemini-2.0-flash")
         chat = text_model.start_chat()
         text_response = chat.send_message(prompt)
         summary = text_response.text
