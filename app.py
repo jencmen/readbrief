@@ -21,7 +21,7 @@ class BookSummary(db.Model):
     title = db.Column(db.String(256), nullable=False)
     author = db.Column(db.String(256))
     summary = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(512))
+    image_url = db.Column(db.Text)
 
 @app.route('/')
 def home():
@@ -79,6 +79,16 @@ def initdb():
         return "✅ PostgreSQL tables created"
     except Exception as e:
         return f"❌ Error: {e}"
+
+@app.route('/resetdb')
+def resetdb():
+    try:
+        db.drop_all()
+        db.create_all()
+        return "✅ Database tables dropped and recreated."
+    except Exception as e:
+        return f"❌ Error: {str(e)}"
+
 
 if __name__ == '__main__':
     with app.app_context():
