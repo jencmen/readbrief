@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify, url_for
 import os
 import google.generativeai as genai
 import requests
+import urllib.parse
 
 app = Flask("ReadBrief")
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -23,27 +24,22 @@ def summarize():
         text_response = chat.send_message(prompt)
         summary = text_response.text
 
-        # 2. Get an image from Unsplash
+        # 2. Generate image using Pollinations API with summary included in prompt
+        combined_prompt = f"{book_title} book cover, cinematic, themes: {summary}"
+        image_prompt = urllib.parse.quote(combined_prompt)
+        params = {
+            "width": 1280,
+            "height": 720,
+            "seed": 42,
+            "model": "flux"
+        }
+        image_url = f"https://image.pollinations.ai/prompt/{image_prompt}"
+
+        # Optional: Validate the image URL by requesting it (fallback to default if fails)
         try:
-            headers = {
-                "Accept-Version": "v1",
-                "Authorization": f"Client-ID {os.getenv('UNSPLASH_ACCESS_KEY')}"
-            }
-            query = f"{book_title}"
-            response = requests.get(
-                "https://api.unsplash.com/search/photos",
-                params={"query": query, "per_page": 1},
-                headers=headers
-            )
+            response = requests.get(image_url, params=params, timeout=60)
             response.raise_for_status()
-
-            results = response.json()
-            if results["results"]:
-                image_url = results["results"][0]["urls"]["regular"]
-            else:
-                image_url = url_for('static', filename='default_image.png')
-
-        except Exception as unsplash_error:
+        except requests.exceptions.RequestException as e:
             image_url = url_for('static', filename='default_image.png')
 
         return render_template("result.html", title=book_title, author=author, summary=summary, image_url=image_url)
