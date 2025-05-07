@@ -6,7 +6,7 @@
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 30px;
+      padding: 80px 30px 30px;
       background-color: #f4f4f4;
     }
     img {
@@ -50,25 +50,29 @@
     .recent-item h4 {
       margin: 10px 0 5px;
     }
+    .logo-link {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      z-index: 100;
+    }
+    .logo-link img {
+      height: 50px;
+    }
   </style>
 </head>
 <body>
+
+  <a href="/" class="logo-link">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="ReadBrief Logo">
+  </a>
+
   <h1>Summary of <em>{{ title }}</em></h1>
   {% if author %}<h3>by {{ author }}</h3>{% endif %}
   {% if image_url %}
     <img src="{{ image_url }}" alt="Visual representation of {{ title }}">
   {% endif %}
   <div class="summary">{{ summary }}</div>
-<a href="/" style="
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #4285f4;
-  color: white;
-  text-decoration: none;
-  border-radius: 20px;
-  font-weight: bold;
-">⬅️ Home</a>
 
   {% if recent_entries %}
     <div class="recent">
@@ -87,5 +91,6 @@
       {% endfor %}
     </div>
   {% endif %}
+
 </body>
 </html>
